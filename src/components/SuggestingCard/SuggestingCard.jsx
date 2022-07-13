@@ -1,17 +1,28 @@
 import React from 'react';
+import axiosInstance from '../../core/axios/axiosInstance';
 import {Card, RoundButton} from './SuggestingCard.style';
 
-const Suggesting = ({image, name, info, id}) => {
+const Suggesting = ({id, image, name, info}) => {
   return (
     <Card>
       <div className='suggesting__meta'>
-        <img className='suggesting__image' src={image} alt='' />
+        <img
+          crossOrigin='anonymise'
+          className='suggesting__image'
+          src={image}
+          alt=''
+        />
         <div className='suggesting__titles'>
           <span className='suggesting__name'>{name} </span>
           <span className='suggesting__info'>{info} </span>
         </div>
       </div>
-      <RoundButton label='Add' />
+      <RoundButton
+        label='Add'
+        onClick={async () => {
+          await axiosInstance.post(`users/sendFriendRequest/${id}`);
+        }}
+      />
     </Card>
   );
 };

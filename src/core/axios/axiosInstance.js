@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {toast} from 'react-toastify';
+import {setLoadingState} from '../store/loading.slice';
 
 export const axiosInstance = axios.create({
   baseURL: 'http://localhost:5000/api/v1/',
@@ -8,6 +9,7 @@ export const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) config.headers.authorization = `Bearer ${token}`;
+  setLoadingState(true);
   return config;
 });
 
@@ -43,6 +45,8 @@ axiosInstance.interceptors.response.use(
       default:
         break;
     }
+
+    setLoadingState(false);
     Promise.reject(err);
   }
 );

@@ -7,13 +7,15 @@ import Notification from '../../components/Notification/Notification';
 import SideMenu from '../../components/SideMenu/SideMenu';
 import axiosInstance from '../../core/axios/axiosInstance';
 import {Content, Warper} from './Home.style';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {setProfileInfo} from '../../core/store/profile.slice';
 import {setLoadingState} from '../../core/store/loading.slice';
 import ConfirmDialogue from '../../components/ConfirmDialogue/ConfirmDialogue';
+import {getActiveChatState} from '../../core/store/activeChat.slice';
 
 const Home = () => {
   const dispatch = useDispatch();
+  const activeChat = useSelector(getActiveChatState);
   const getProfile = async () => {
     const user = await axiosInstance.get('users/me');
     dispatch(setProfileInfo(user.data));
@@ -30,9 +32,14 @@ const Home = () => {
       <Warper>
         <SideMenu />
         <Content>
-          <ChatInfo />
-          <Main />
+          {activeChat.id && (
+            <>
+              <ChatInfo />
+              <Main />
+            </>
+          )}
         </Content>
+
         <Notification />
       </Warper>
       <Dialogue />

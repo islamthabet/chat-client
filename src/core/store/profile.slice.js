@@ -1,7 +1,19 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-  profileState: {},
+  profileState: {
+    name: '',
+    email: '',
+    DOB: '',
+    gender: '',
+    phone: '',
+    country: '',
+    image: '',
+    role: '',
+    sendRequest: [],
+    pendingResponse: [],
+    friends: [],
+  },
 };
 
 const profileSlice = createSlice({

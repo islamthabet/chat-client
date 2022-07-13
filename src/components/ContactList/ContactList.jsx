@@ -1,139 +1,34 @@
-import React from 'react';
-import {useState} from 'react';
-import ContactCard from '../ContactCard/ContactCard';
+import React, {useState} from 'react';
 import {Warper} from './ContactList.style';
-import profile from '../../assets/profile.jpg';
+import {useSelector} from 'react-redux';
+import {getProfileState} from '../../core/store/profile.slice';
+import ContactCard from '../ContactCard/ContactCard';
+import {useEffect} from 'react';
 
 const ContactList = () => {
-  const [contacts, setContacts] = useState([
-    {
-      img: profile,
-      name: 'islam mohammed',
-      lastMessage: {
-        message: 'i love yoyo',
-        date: '1-1-2020',
-      },
-      isActive: true,
-      notification: 3,
-    },
-    {
-      img: profile,
-      name: 'islam mohammed',
-      lastMessage: {
-        message: 'i love yoyo',
-        date: '1-1-2020',
-      },
-      isActive: true,
-      notification: 3,
-    },
-    {
-      img: profile,
-      name: 'islam mohammed',
-      lastMessage: {
-        message: 'i love yoyo',
-        date: '1-1-2020',
-      },
-      isActive: true,
-      notification: 3,
-    },
-    {
-      img: profile,
-      name: 'islam mohammed',
-      lastMessage: {
-        message: 'i love yoyo',
-        date: '1-1-2020',
-      },
-      isActive: true,
-      notification: 3,
-      activeChat: true,
-    },
-    {
-      img: profile,
-      name: 'islam mohammed',
-      lastMessage: {
-        message: 'i love yoyo',
-        date: '1-1-2020',
-      },
-      isActive: true,
-      notification: 3,
-    },
-    {
-      img: profile,
-      name: 'islam mohammed',
-      lastMessage: {
-        message: 'i love yoyo',
-        date: '1-1-2020',
-      },
-      isActive: true,
-      notification: 3,
-    },
-    {
-      img: profile,
-      name: 'islam mohammed',
-      lastMessage: {
-        message: 'i love yoyo',
-        date: '1-1-2020',
-      },
-      isActive: true,
-      notification: 3,
-    },
-    {
-      img: profile,
-      name: 'islam mohammed',
-      lastMessage: {
-        message: 'i love yoyo',
-        date: '1-1-2020',
-      },
-      isActive: true,
-      notification: 3,
-    },
-    {
-      img: profile,
-      name: 'islam mohammed',
-      lastMessage: {
-        message: 'i love yoyo',
-        date: '1-1-2020',
-      },
-      isActive: true,
-      notification: 3,
-    },
-    {
-      img: profile,
-      name: 'islam mohammed',
-      lastMessage: {
-        message: 'i love yoyo',
-        date: '1-1-2020',
-      },
-      isActive: true,
-      notification: 3,
-    },
-    {
-      img: profile,
-      name: 'islam mohammed',
-      lastMessage: {
-        message: 'i love yoyo',
-        date: '1-1-2020',
-      },
-      isActive: true,
-      notification: 3,
-    },
-  ]);
+  const [contacts, setContacts] = useState([]);
+  const profile = useSelector(getProfileState);
+  useEffect(() => {
+    console.log(profile.friends);
+    setContacts(profile.friends);
+  }, [profile]);
   return (
     <Warper>
-      {contacts.length > 0 &&
-        contacts.map((contact, index) => {
-          return (
-            <ContactCard
-              key={index}
-              img={contact.img}
-              name={contact.name}
-              lastMessage={contact.lastMessage}
-              isActive={contact.isActive}
-              notification={contact.notification}
-              activeChat={contact.activeChat}
-            />
-          );
-        })}
+      {contacts.map((contact) => {
+        return (
+          <ContactCard
+            key={contact.id}
+            image={contact.image}
+            email={contact.email}
+            name={contact.name}
+            lastMessage={contact.lastMessage}
+            isActive={contact.isActive}
+            notification={contact.notification}
+            activeChat={contact.activeChat}
+            id={contact.id}
+          />
+        );
+      })}
     </Warper>
   );
 };

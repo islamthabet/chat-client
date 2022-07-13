@@ -1,14 +1,18 @@
-import React from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {Warper} from './MessageInput.style';
-import {ImAttachment} from 'react-icons/im';
 import Emoji from '../Emoji/Emoji';
-import {useState} from 'react';
-import {useEffect} from 'react';
-import {useRef} from 'react';
-import {MdEmojiEmotions, MdOutlineMic} from 'react-icons/md';
 import {Button} from 'primereact/button';
+import {ImAttachment} from 'react-icons/im';
+import {MdEmojiEmotions, MdOutlineMic} from 'react-icons/md';
+
+import {useSelector} from 'react-redux';
+import {getProfileState} from '../../core/store/profile.slice';
+import {getActiveChatState} from '../../core/store/activeChat.slice';
+import axiosInstance from '../../core/axios/axiosInstance';
 
 const MessageInput = () => {
+  const profile = useSelector(getProfileState);
+  const activeChat = useSelector(getActiveChatState);
   const emojiRef = useRef();
   const file = useRef();
   const [showEmoji, setShowEmoji] = useState(false);
@@ -31,7 +35,12 @@ const MessageInput = () => {
     console.log(e.target.files[0]);
   };
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
+    await axiosInstance.post('message', {
+      message,
+      from: profile.id,
+      to: activeChat.id,
+    });
     setMessage('');
   };
 
