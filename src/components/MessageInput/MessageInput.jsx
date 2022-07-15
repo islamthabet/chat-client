@@ -9,8 +9,9 @@ import {useSelector} from 'react-redux';
 import {getProfileState} from '../../core/store/profile.slice';
 import {getActiveChatState} from '../../core/store/activeChat.slice';
 import axiosInstance from '../../core/axios/axiosInstance';
+import socket from '../../core/socket/socket.client';
 
-const MessageInput = () => {
+const MessageInput = ({setMessages}) => {
   const profile = useSelector(getProfileState);
   const activeChat = useSelector(getActiveChatState);
   const emojiRef = useRef();
@@ -40,6 +41,17 @@ const MessageInput = () => {
       message,
       from: profile.id,
       to: activeChat.id,
+    });
+    socket.emit('message', {message, to: activeChat.id});
+    setMessages((perv) => {
+      const arr = [...perv];
+      arr.push({
+        message,
+        from: profile,
+        to: activeChat,
+        createdAt: new Date(),
+      });
+      return arr;
     });
     setMessage('');
   };

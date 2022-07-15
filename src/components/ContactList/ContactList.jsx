@@ -1,31 +1,24 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Warper} from './ContactList.style';
 import {useSelector} from 'react-redux';
-import {getProfileState} from '../../core/store/profile.slice';
 import ContactCard from '../ContactCard/ContactCard';
-import {useEffect} from 'react';
+import {getFriendsState} from '../../core/store/friends.slice';
 
 const ContactList = () => {
-  const [contacts, setContacts] = useState([]);
-  const profile = useSelector(getProfileState);
-  useEffect(() => {
-    console.log(profile.friends);
-    setContacts(profile.friends);
-  }, [profile]);
+  const friends = useSelector(getFriendsState);
   return (
     <Warper>
-      {contacts.map((contact) => {
+      {friends.map((friend) => {
         return (
           <ContactCard
-            key={contact.id}
-            image={contact.image}
-            email={contact.email}
-            name={contact.name}
-            lastMessage={contact.lastMessage}
-            isActive={contact.isActive}
-            notification={contact.notification}
-            activeChat={contact.activeChat}
-            id={contact.id}
+            key={friend.id}
+            image={friend.image}
+            email={friend.email}
+            name={friend.name}
+            lastMessage={friend.lastMessage}
+            lastSeen={friend.lastSeen}
+            notification={friend.notification}
+            id={friend.id}
           />
         );
       })}

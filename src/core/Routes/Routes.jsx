@@ -3,6 +3,7 @@ import {useRoutes, Navigate} from 'react-router-dom';
 import Auth from '../../pages/Auth/Auth';
 import Login from '../../pages/Auth/Login/Login';
 import Register from '../../pages/Auth/Register/Register';
+import ChatBody from '../../pages/ChatBody/ChatBody';
 import Home from '../../pages/Home/Home';
 import NotFound from '../../pages/NotFound/NotFound';
 
@@ -17,7 +18,11 @@ const Routes = () => {
         {path: 'register', element: <Register />},
       ],
     },
-    {path: '/', element: token ? <Home /> : <Navigate to='/auth' />},
+    {
+      path: '/',
+      element: token ? <Home /> : <Navigate to='/auth' />,
+      children: [{path: ':id', element: <ChatBody />}],
+    },
     {path: '*', element: <NotFound />},
   ]);
   return routes;

@@ -61,7 +61,7 @@ const Register = () => {
       const res = await axiosInstance.post('auth/register', data);
       localStorage.setItem('token', res.data.token.accessToken);
       localStorage.setItem('refreshToken', res.data.token.refreshToken);
-      localStorage.setItem('user', res.data.user);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
       navigate('/');
     } catch (err) {
       dispatch(setLoadingState(false));

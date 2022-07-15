@@ -5,10 +5,12 @@ import {Warper, RoundInput} from './SideMenuChats.style';
 import {useDispatch} from 'react-redux';
 import {closeDialogue, openDialogue} from '../../core/store/dialogue.slice';
 import NewChat from '../NewChat/NewChat';
+import axiosInstance from '../../core/axios/axiosInstance';
+import {setFriendState} from '../../core/store/friends.slice';
 
 const SideMenuChats = () => {
   const dispatch = useDispatch();
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState('');
   const startNewChat = () => {
     dispatch(
       openDialogue({
@@ -46,7 +48,13 @@ const SideMenuChats = () => {
         <RoundInput
           placeholder='search...'
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={async (e) => {
+            setSearch(e.target.value);
+            const res = await axiosInstance.get(
+              `users/searchFriends?name=${e.target.value}`
+            );
+            dispatch(setFriendState(res.data));
+          }}
         />
       </span>
       <ContactList />

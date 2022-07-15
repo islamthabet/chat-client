@@ -31,7 +31,7 @@ const Login = () => {
       const res = await axiosInstance.post('auth/login', data);
       localStorage.setItem('token', res.data.token.accessToken);
       localStorage.setItem('refreshToken', res.data.token.refreshToken);
-      localStorage.setItem('user', res.data.user);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
       navigate('/');
     } catch (error) {
       dispatch(setLoadingState(false));

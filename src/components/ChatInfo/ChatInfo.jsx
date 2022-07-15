@@ -4,9 +4,29 @@ import {RiPhoneFill} from 'react-icons/ri';
 import {BsCameraVideoFill, BsThreeDots} from 'react-icons/bs';
 import {useSelector} from 'react-redux';
 import {getActiveChatState} from '../../core/store/activeChat.slice';
+import moment from 'moment';
 
 const ChatInfo = () => {
   const activeChat = useSelector(getActiveChatState);
+  const getLastSeen = (lastSeen) => {
+    if (lastSeen === 'true') {
+      return 'online';
+    } else {
+      if (moment().diff(lastSeen, 'weeks') > 4) {
+        return `last seen since ${moment().diff(lastSeen, 'months')} month`;
+      } else if (moment().diff(lastSeen, 'days') > 7) {
+        return `last seen since ${moment().diff(lastSeen, 'weeks')} week`;
+      } else if (moment().diff(lastSeen, 'hours') > 24) {
+        return `last seen since ${moment().diff(lastSeen, 'days')} day`;
+      } else if (moment().diff(lastSeen, 'minutes') > 60) {
+        return `last seen since ${moment().diff(lastSeen, 'hours')} hour`;
+      } else if (moment().diff(lastSeen, 'seconds') > 60) {
+        return `last seen since ${moment().diff(lastSeen, 'minutes')} minute`;
+      } else {
+        return `last seen since ${moment().diff(lastSeen, 'seconds')} second`;
+      }
+    }
+  };
   return (
     <Warper>
       <div className='chat-info'>
@@ -19,7 +39,7 @@ const ChatInfo = () => {
         <div className='chat-info__titles'>
           <span className='chat-info__titles--main'>{activeChat.name}</span>
           <span className='chat-info__titles--sub'>
-            last seen 3 minutes ago
+            {getLastSeen(activeChat.lastSeen)}
           </span>
         </div>
       </div>

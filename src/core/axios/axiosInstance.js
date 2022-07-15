@@ -38,8 +38,8 @@ axiosInstance.interceptors.response.use(
         toast.error(err.response.data.message, {
           toastId: err.response.data.message.replaceAll(' ', '_'),
         });
-        // localStorage.clear();
-        // location.assign('auth');
+        localStorage.clear();
+        location.assign('auth');
         break;
 
       default:
