@@ -21,7 +21,7 @@ const Routes = () => {
     {
       path: '/',
       element: token ? <Home /> : <Navigate to='/auth' />,
-      children: [{path: ':id', element: <ChatBody />}],
+      children: [{path: ':type/:id', element: <ChatBody />}],
     },
     {path: '*', element: <NotFound />},
   ]);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {AiTwotoneMessage} from 'react-icons/ai';
 import {RiPhoneFill} from 'react-icons/ri';
 import {FaUserClock, FaUsers} from 'react-icons/fa';
@@ -10,11 +10,19 @@ import {
   getActiveSlideState,
   setActiveSlideState,
 } from '../../core/store/activeSlide.slice';
+import {useLocation} from 'react-router-dom';
 
 const HeaderNavigation = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const profile = useSelector(getProfileState);
   const activeSection = useSelector(getActiveSlideState);
+  useEffect(() => {
+    if (location.pathname.includes('user')) dispatch(setActiveSlideState(1));
+    else if (location.pathname.includes('room'))
+      dispatch(setActiveSlideState(3));
+  }, [location]);
+
   return (
     <Warper>
       <AiTwotoneMessage

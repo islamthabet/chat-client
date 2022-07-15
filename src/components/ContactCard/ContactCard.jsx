@@ -18,7 +18,7 @@ const ContactCard = ({id, image, name, email, lastSeen, notification}) => {
       onClick={() => {
         if (activeChat.id === id) return;
         dispatch(setActiveChatState({id, name, email, image, lastSeen}));
-        navigate(`/${id}`);
+        navigate(`/user/${id}`);
       }}>
       <img
         className='contact__card__img'

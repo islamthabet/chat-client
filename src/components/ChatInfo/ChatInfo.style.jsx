@@ -35,6 +35,19 @@ export const Warper = styled.div`
           font-size: 0.9rem;
           color: #8d8d8d;
         }
+        &--members {
+          font-size: 0.9rem;
+          color: #8d8d8d;
+          text-transform: capitalize;
+          position: relative;
+          :not(:last-of-type) {
+            ::before {
+              content: '&';
+              position: absolute;
+              right: -0.85rem;
+            }
+          }
+        }
       }
     }
     &icons {

@@ -16,7 +16,7 @@ const SideMenuFriendRequest = () => {
   return (
     <Warper>
       <div className='flex justify-content-between align-items-center px-4 pt-4'>
-        <h3 className='side__title'>Friend Requests</h3>
+        <h3 className='side__title'>Requests</h3>
       </div>
       <Content>
         {requests.map((req) => {

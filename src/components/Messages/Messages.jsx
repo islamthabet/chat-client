@@ -5,19 +5,18 @@ import {useSelector} from 'react-redux';
 import axiosInstance from '../../core/axios/axiosInstance';
 import socket from '../../core/socket/socket.client';
 import {getProfileState} from '../../core/store/profile.slice';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useParams} from 'react-router-dom';
 import {useRef} from 'react';
 
 const Messages = ({messages, setMessages}) => {
   const messagesWarper = useRef();
+  const params = useParams();
   const location = useLocation();
   const activeChat = useSelector(getActiveChatState);
   const profile = useSelector(getProfileState);
 
   const getMessages = async () => {
-    const res = await axiosInstance.get(
-      `message/${location.pathname.split('/')[1]}`
-    );
+    const res = await axiosInstance.get(`message/${params.id}/${params.type}`);
     setMessages(res.data);
   };
 
@@ -27,7 +26,6 @@ const Messages = ({messages, setMessages}) => {
 
   useEffect(() => {
     socket.on('message', (msg) => {
-      console.log(msg, activeChat);
       if (msg.from === activeChat.id) {
         setMessages((perv) => {
           const arr = [...perv];
@@ -51,7 +49,7 @@ const Messages = ({messages, setMessages}) => {
   return (
     <Warper ref={messagesWarper}>
       {messages.map((message, index) => (
-        <Message key={index} sended={message.to.id === activeChat.id}>
+        <Message key={index} sended={message.from.id === profile.id}>
           <span>{message.message}</span>
         </Message>
       ))}

@@ -10,8 +10,10 @@ import {getProfileState} from '../../core/store/profile.slice';
 import {getActiveChatState} from '../../core/store/activeChat.slice';
 import axiosInstance from '../../core/axios/axiosInstance';
 import socket from '../../core/socket/socket.client';
+import {useParams} from 'react-router-dom';
 
 const MessageInput = ({setMessages}) => {
+  const params = useParams();
   const profile = useSelector(getProfileState);
   const activeChat = useSelector(getActiveChatState);
   const emojiRef = useRef();
@@ -37,11 +39,19 @@ const MessageInput = ({setMessages}) => {
   };
 
   const sendMessage = async () => {
-    await axiosInstance.post('message', {
-      message,
-      from: profile.id,
-      to: activeChat.id,
-    });
+    let data =
+      params.type === 'user'
+        ? {
+            message,
+            from: profile.id,
+            toUser: activeChat.id,
+          }
+        : {
+            message,
+            from: profile.id,
+            toRoom: activeChat.id,
+          };
+    await axiosInstance.post('message', data);
     socket.emit('message', {message, to: activeChat.id});
     setMessages((perv) => {
       const arr = [...perv];
@@ -69,18 +79,8 @@ const MessageInput = ({setMessages}) => {
         placeholder='Type You Text'
         value={message}
         onChange={(e) => {
-          // if (e.nativeEvent.inputType === 'insertLineBreak') {
-          //   e.preventDefault();
-          //   return;
-          // }
           setMessage(e.target.value);
-        }}
-        // onKeyDown={(e) => {
-        //   if (e.key === 'Enter') {
-        //     sendMessage();
-        //   }
-        // }}
-      ></textarea>
+        }}></textarea>
       <MdEmojiEmotions
         id='emoji-icon'
         onClick={() => {
