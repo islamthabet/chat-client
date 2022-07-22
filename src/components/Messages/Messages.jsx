@@ -1,14 +1,14 @@
-import React, {useState, useEffect} from 'react';
-import {Warper, Message} from './Messages.style';
-import {getActiveChatState} from '../../core/store/activeChat.slice';
-import {useSelector} from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { Warper, Message } from './Messages.style';
+import { getActiveChatState } from '../../core/store/activeChat.slice';
+import { useSelector } from 'react-redux';
 import axiosInstance from '../../core/axios/axiosInstance';
 import socket from '../../core/socket/socket.client';
-import {getProfileState} from '../../core/store/profile.slice';
-import {useLocation, useParams} from 'react-router-dom';
-import {useRef} from 'react';
+import { getProfileState } from '../../core/store/profile.slice';
+import { useLocation, useParams } from 'react-router-dom';
+import { useRef } from 'react';
 
-const Messages = ({messages, setMessages}) => {
+const Messages = ({ messages, setMessages }) => {
   const messagesWarper = useRef();
   const params = useParams();
   const location = useLocation();

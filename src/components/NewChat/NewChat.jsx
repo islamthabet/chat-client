@@ -1,9 +1,9 @@
 import React from 'react';
-import {useEffect} from 'react';
-import {useState} from 'react';
-import {Warper} from './NewChat.style';
-import {useSelector} from 'react-redux';
-import {getProfileState} from '../../core/store/profile.slice';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { Warper } from './NewChat.style';
+import { useSelector } from 'react-redux';
+import { getProfileState } from '../../core/store/profile.slice';
 import FriendCard from '../FriendCard/FriendCard';
 
 const NewChat = () => {

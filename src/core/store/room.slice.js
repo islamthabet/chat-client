@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   rooms: [],
@@ -15,7 +15,7 @@ const roomsSlice = createSlice({
   },
 });
 
-export const {setRoomsState, resetRoomsState} = roomsSlice.actions;
+export const { setRoomsState, resetRoomsState } = roomsSlice.actions;
 
 export const getRoomsState = (state) => state.room.rooms;
 

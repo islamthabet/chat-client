@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   state: false,
@@ -14,7 +14,7 @@ const loadingSlice = createSlice({
   },
 });
 
-export const {setLoadingState} = loadingSlice.actions;
+export const { setLoadingState } = loadingSlice.actions;
 
 export const getLoadingState = (state) => state.loading.state;
 

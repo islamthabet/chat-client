@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   friends: [],
@@ -15,7 +15,7 @@ const friendsSlice = createSlice({
   },
 });
 
-export const {setFriendState, resetFriends} = friendsSlice.actions;
+export const { setFriendState, resetFriends } = friendsSlice.actions;
 
 export const getFriendsState = (state) => state.friends.friends;
 

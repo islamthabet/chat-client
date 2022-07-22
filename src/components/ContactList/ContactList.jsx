@@ -1,8 +1,8 @@
 import React from 'react';
-import {Warper} from './ContactList.style';
-import {useSelector} from 'react-redux';
+import { Warper } from './ContactList.style';
+import { useSelector } from 'react-redux';
 import ContactCard from '../ContactCard/ContactCard';
-import {getFriendsState} from '../../core/store/friends.slice';
+import { getFriendsState } from '../../core/store/friends.slice';
 
 const ContactList = () => {
   const friends = useSelector(getFriendsState);

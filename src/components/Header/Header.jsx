@@ -1,7 +1,7 @@
 import React from 'react';
 import ChatInfo from '../ChatInfo/ChatInfo';
 import HeaderNavigation from '../HeaderNavigation/HeaderNavigation';
-import {HeaderStyle} from './Header.style';
+import { HeaderStyle } from './Header.style';
 
 const Header = () => {
   return (
@@ -12,7 +12,7 @@ const Header = () => {
             <h2>Chat App</h2>
           </li>
           <li>
-            <h4 className='select-none'>Create Memorable talks</h4>
+            <h4 className="select-none">Create Memorable talks</h4>
           </li>
         </ul>
       </nav>

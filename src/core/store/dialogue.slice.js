@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   dialogueState: {
@@ -22,7 +22,7 @@ const dialogueSlice = createSlice({
   initialState,
   reducers: {
     openDialogue: (state, action) => {
-      state.dialogueState = {...action.payload};
+      state.dialogueState = { ...action.payload };
     },
     closeDialogue: (state, action) => {
       return initialState;
@@ -30,7 +30,7 @@ const dialogueSlice = createSlice({
   },
 });
 
-export const {openDialogue, closeDialogue} = dialogueSlice.actions;
+export const { openDialogue, closeDialogue } = dialogueSlice.actions;
 
 export const getDialogueState = (state) => state.dialogue.dialogueState;
 

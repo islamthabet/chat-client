@@ -1,24 +1,25 @@
-import React, {useEffect, useState} from 'react';
-import {useForm, Controller} from 'react-hook-form';
-import {Form, Title} from '../Auth.style';
-import {InputText} from 'primereact/inputtext';
-import {Password} from 'primereact/password';
-import {classNames} from 'primereact/utils';
-import {Button} from 'primereact/button';
-import {Calendar} from 'primereact/calendar';
-import {Dropdown} from 'primereact/dropdown';
+import React, { useEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { Form, Title } from '../Auth.style';
+import { InputText } from 'primereact/inputtext';
+import { Password } from 'primereact/password';
+import { classNames } from 'primereact/utils';
+import { Button } from 'primereact/button';
+import { Calendar } from 'primereact/calendar';
+import { Dropdown } from 'primereact/dropdown';
 import axiosInstance from '../../../core/axios/axiosInstance';
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
-import {useDispatch} from 'react-redux';
-import {setLoadingState} from '../../../core/store/loading.slice';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setLoadingState } from '../../../core/store/loading.slice';
+import socket from '../../../core/socket/socket.client';
 
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const genderOptions = [
-    {name: 'Male', value: 'male'},
-    {name: 'Female', value: 'female'},
+    { name: 'Male', value: 'male' },
+    { name: 'Female', value: 'female' },
   ];
   const [countries, setCountries] = useState([]);
   const defaultValues = {
@@ -34,10 +35,10 @@ const Register = () => {
 
   const {
     control,
-    formState: {errors},
+    formState: { errors },
     handleSubmit,
     reset,
-  } = useForm({defaultValues});
+  } = useForm({ defaultValues });
 
   const getCountries = async () => {
     const res = await axios.get('https://restcountries.com/v3.1/all');
@@ -62,6 +63,8 @@ const Register = () => {
       localStorage.setItem('token', res.data.token.accessToken);
       localStorage.setItem('refreshToken', res.data.token.refreshToken);
       localStorage.setItem('user', JSON.stringify(res.data.user));
+      socket.emit('new-user');
+      socket.disconnect();
       navigate('/');
     } catch (err) {
       dispatch(setLoadingState(false));
@@ -69,17 +72,15 @@ const Register = () => {
   };
 
   const getFormErrorMessage = (name) => {
-    return (
-      errors[name] && <small className='p-error'>{errors[name].message}</small>
-    );
+    return errors[name] && <small className="p-error">{errors[name].message}</small>;
   };
 
   const selectedCountryTemplate = (option, props) => {
     if (option) {
       return (
-        <div className='flex gap-3'>
+        <div className="flex gap-3">
           <img
-            className='w-2rem'
+            className="w-2rem"
             alt={option.name}
             src={option.flag}
             onError={(e) =>
@@ -97,17 +98,16 @@ const Register = () => {
 
   const countryOptionTemplate = (option) => {
     return (
-      <div className='flex gap-3 w-5rem '>
+      <div className="flex gap-3 w-5rem ">
         <img
-          className='w-2rem'
+          className="w-2rem"
           alt={option.name}
           src={option.flag}
           onError={(e) =>
-            (e.target.src =
-              'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png')
+            (e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png')
           }
         />
-        <div className='text-color-secondary'>{option.name}</div>
+        <div className="text-color-secondary">{option.name}</div>
       </div>
     );
   };
@@ -117,29 +117,28 @@ const Register = () => {
       <Title>Register</Title>
       <Form
         onSubmit={handleSubmit(onSubmit)}
-        style={{maxWidth: '600px', minWidth: '100%'}}
-        className='p-fluid formgrid grid'>
+        style={{ maxWidth: '600px', minWidth: '100%' }}
+        className="p-fluid formgrid grid"
+      >
         {/* name */}
-        <div className='field col-6'>
-          <span className='p-float-label p-input-icon-right'>
-            <i className='pi pi-user' />
+        <div className="field col-6">
+          <span className="p-float-label p-input-icon-right">
+            <i className="pi pi-user" />
             <Controller
-              name='name'
+              name="name"
               control={control}
               rules={{
                 required: 'Name is required.',
               }}
-              render={({field, fieldState}) => (
+              render={({ field, fieldState }) => (
                 <InputText
                   id={field.name}
                   {...field}
-                  className={classNames({'p-invalid': fieldState.error})}
+                  className={classNames({ 'p-invalid': fieldState.error })}
                 />
               )}
             />
-            <label
-              htmlFor='name'
-              className={classNames({'p-error': !!errors.name})}>
+            <label htmlFor="name" className={classNames({ 'p-error': !!errors.name })}>
               Name*
             </label>
           </span>
@@ -147,11 +146,11 @@ const Register = () => {
         </div>
 
         {/* email */}
-        <div className='field col-6'>
-          <span className='p-float-label p-input-icon-right'>
-            <i className='pi pi-envelope' />
+        <div className="field col-6">
+          <span className="p-float-label p-input-icon-right">
+            <i className="pi pi-envelope" />
             <Controller
-              name='email'
+              name="email"
               control={control}
               rules={{
                 required: 'Email is required.',
@@ -160,17 +159,15 @@ const Register = () => {
                   message: 'Invalid email address. E.g. example@email.com',
                 },
               }}
-              render={({field, fieldState}) => (
+              render={({ field, fieldState }) => (
                 <InputText
                   id={field.name}
                   {...field}
-                  className={classNames({'p-invalid': fieldState.error})}
+                  className={classNames({ 'p-invalid': fieldState.error })}
                 />
               )}
             />
-            <label
-              htmlFor='email'
-              className={classNames({'p-error': !!errors.email})}>
+            <label htmlFor="email" className={classNames({ 'p-error': !!errors.email })}>
               Email*
             </label>
           </span>
@@ -178,24 +175,22 @@ const Register = () => {
         </div>
 
         {/* password */}
-        <div className='field col-6'>
-          <span className='p-float-label'>
+        <div className="field col-6">
+          <span className="p-float-label">
             <Controller
-              name='password'
+              name="password"
               control={control}
-              rules={{required: 'Password is required.'}}
-              render={({field, fieldState}) => (
+              rules={{ required: 'Password is required.' }}
+              render={({ field, fieldState }) => (
                 <Password
                   id={field.name}
                   {...field}
                   toggleMask
-                  className={classNames({'p-invalid': fieldState.error})}
+                  className={classNames({ 'p-invalid': fieldState.error })}
                 />
               )}
             />
-            <label
-              htmlFor='password'
-              className={classNames({'p-error': errors.password})}>
+            <label htmlFor="password" className={classNames({ 'p-error': errors.password })}>
               Password*
             </label>
           </span>
@@ -203,23 +198,24 @@ const Register = () => {
         </div>
 
         {/* confirm password */}
-        <div className='field col-6'>
-          <span className='p-float-label'>
+        <div className="field col-6">
+          <span className="p-float-label">
             <Controller
-              name='confirmPassword'
+              name="confirmPassword"
               control={control}
-              render={({field, fieldState}) => (
+              render={({ field, fieldState }) => (
                 <Password
                   id={field.name}
                   {...field}
                   toggleMask
-                  className={classNames({'p-invalid': fieldState.error})}
+                  className={classNames({ 'p-invalid': fieldState.error })}
                 />
               )}
             />
             <label
-              htmlFor='confirmPassword'
-              className={classNames({'p-error': errors.confirmPassword})}>
+              htmlFor="confirmPassword"
+              className={classNames({ 'p-error': errors.confirmPassword })}
+            >
               Password*
             </label>
           </span>
@@ -227,16 +223,16 @@ const Register = () => {
         </div>
 
         {/* DOB */}
-        <div className='field col-6'>
-          <span className='p-float-label p-input-icon-right'>
+        <div className="field col-6">
+          <span className="p-float-label p-input-icon-right">
             {/* <i className='pi pi-calendar' /> */}
             <Controller
-              name='DOB'
+              name="DOB"
               control={control}
               rules={{
                 required: 'DOB is required.',
               }}
-              render={({field, fieldState}) => (
+              render={({ field, fieldState }) => (
                 <Calendar
                   id={field.name}
                   value={field.value}
@@ -245,9 +241,7 @@ const Register = () => {
                 />
               )}
             />
-            <label
-              htmlFor='DOB'
-              className={classNames({'p-error': !!errors.DOB})}>
+            <label htmlFor="DOB" className={classNames({ 'p-error': !!errors.DOB })}>
               Date Of Birth*
             </label>
           </span>
@@ -255,29 +249,27 @@ const Register = () => {
         </div>
 
         {/* gender */}
-        <div className='field col-6'>
-          <span className='p-float-label p-input-icon-right'>
+        <div className="field col-6">
+          <span className="p-float-label p-input-icon-right">
             {/* <i className='pi pi-envelope' /> */}
             <Controller
-              name='gender'
+              name="gender"
               control={control}
               rules={{
                 required: 'Gender is required.',
               }}
-              render={({field, fieldState}) => (
+              render={({ field, fieldState }) => (
                 <Dropdown
                   id={field.name}
                   value={field.value}
                   onChange={(e) => field.onChange(e.value)}
                   options={genderOptions}
-                  optionLabel='name'
-                  className={classNames({'p-invalid': fieldState.error})}
+                  optionLabel="name"
+                  className={classNames({ 'p-invalid': fieldState.error })}
                 />
               )}
             />
-            <label
-              htmlFor='gender'
-              className={classNames({'p-error': !!errors.gender})}>
+            <label htmlFor="gender" className={classNames({ 'p-error': !!errors.gender })}>
               Gender*
             </label>
           </span>
@@ -285,29 +277,29 @@ const Register = () => {
         </div>
 
         {/* country */}
-        <div className='field col-6'>
-          <span className='p-float-label p-input-icon-right'>
+        <div className="field col-6">
+          <span className="p-float-label p-input-icon-right">
             {/* <i className='pi pi-envelope' /> */}
             <Controller
-              name='country'
+              name="country"
               control={control}
               rules={{
                 required: 'Country is required.',
               }}
-              render={({field, fieldState}) => (
+              render={({ field, fieldState }) => (
                 <Dropdown
                   id={field.name}
                   value={field.value}
                   onChange={(e) => field.onChange(e.value)}
                   options={countries}
-                  placeholder='select country*'
+                  placeholder="select country*"
                   filter
                   showClear={field.value}
-                  filterBy='name'
-                  optionLabel='name'
+                  filterBy="name"
+                  optionLabel="name"
                   valueTemplate={selectedCountryTemplate}
                   itemTemplate={countryOptionTemplate}
-                  className={classNames({'p-invalid': fieldState.error})}
+                  className={classNames({ 'p-invalid': fieldState.error })}
                 />
               )}
             />
@@ -321,38 +313,36 @@ const Register = () => {
         </div>
 
         {/* phone */}
-        <div className='field col-6'>
-          <span className='p-float-label p-input-icon-right'>
-            <i className='pi pi-phone' />
+        <div className="field col-6">
+          <span className="p-float-label p-input-icon-right">
+            <i className="pi pi-phone" />
             <Controller
-              name='phone'
+              name="phone"
               control={control}
               rules={{
                 required: 'Phone is required.',
               }}
-              render={({field, fieldState}) => (
+              render={({ field, fieldState }) => (
                 <InputText
                   id={field.name}
                   {...field}
-                  className={classNames({'p-invalid': fieldState.error})}
+                  className={classNames({ 'p-invalid': fieldState.error })}
                 />
               )}
             />
-            <label
-              htmlFor='phone'
-              className={classNames({'p-error': !!errors.phone})}>
+            <label htmlFor="phone" className={classNames({ 'p-error': !!errors.phone })}>
               Phone*
             </label>
           </span>
           {getFormErrorMessage('phone')}
         </div>
 
-        <div className='flex gap-3 col-12'>
-          <Button label='Submit' />
+        <div className="flex gap-3 col-12">
+          <Button label="Submit" />
           <Button
-            label='go to login'
-            className='p-button-secondary'
-            type='button'
+            label="go to login"
+            className="p-button-secondary"
+            type="button"
             onClick={() => navigate('/auth')}
           />
         </div>

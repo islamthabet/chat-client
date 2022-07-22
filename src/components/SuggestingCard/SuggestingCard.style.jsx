@@ -1,4 +1,4 @@
-import {Button} from 'primereact/button';
+import { Button } from 'primereact/button';
 import styled from 'styled-components';
 
 export const Card = styled.div`
@@ -64,7 +64,6 @@ export const RoundButton = styled(Button)`
     border: none;
   }
   :focus {
-    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(180, 53, 244, 1),
-      0 1px 2px 0 black;
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(180, 53, 244, 1), 0 1px 2px 0 black;
   }
 `;

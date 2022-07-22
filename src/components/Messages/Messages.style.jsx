@@ -20,7 +20,6 @@ export const Message = styled.div`
     color: ${(props) => (props.sended ? '#30333d' : '#fff')};
     padding: 0.5rem 2rem;
 
-    border-radius: ${(props) =>
-      props.sended ? '0 25px 0 25px' : '25px 0 25px 0'};
+    border-radius: ${(props) => (props.sended ? '0 25px 0 25px' : '25px 0 25px 0')};
   }
 `;

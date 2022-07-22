@@ -1,9 +1,9 @@
 import React from 'react';
-import {closeDialogue, getDialogueState} from '../../core/store/dialogue.slice';
-import {Warper} from './Dialogue.style';
-import {useSelector} from 'react-redux';
-import {useEffect} from 'react';
-import {useDispatch} from 'react-redux';
+import { closeDialogue, getDialogueState } from '../../core/store/dialogue.slice';
+import { Warper } from './Dialogue.style';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 const Dialogue = () => {
   const dialogue = useSelector(getDialogueState);
@@ -21,11 +21,9 @@ const Dialogue = () => {
     <>
       {dialogue.show && dialogue.type === 'dialogue' && (
         <Warper width={dialogue.width} height={dialogue.height}>
-          <i
-            className='pi pi-times closeBtn cursor-pointer'
-            onClick={dialogue.onReject}></i>
-          <div className='dialogue__content'>
-            <div className='dialogue__content__title'>{dialogue.title}</div>
+          <i className="pi pi-times closeBtn cursor-pointer" onClick={dialogue.onReject}></i>
+          <div className="dialogue__content">
+            <div className="dialogue__content__title">{dialogue.title}</div>
             {dialogue.content}
           </div>
         </Warper>

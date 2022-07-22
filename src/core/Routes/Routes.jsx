@@ -1,5 +1,5 @@
 import React from 'react';
-import {useRoutes, Navigate} from 'react-router-dom';
+import { useRoutes, Navigate } from 'react-router-dom';
 import Auth from '../../pages/Auth/Auth';
 import Login from '../../pages/Auth/Login/Login';
 import Register from '../../pages/Auth/Register/Register';
@@ -14,16 +14,16 @@ const Routes = () => {
       path: 'auth',
       element: <Auth />,
       children: [
-        {path: '', element: <Login />},
-        {path: 'register', element: <Register />},
+        { path: '', element: <Login /> },
+        { path: 'register', element: <Register /> },
       ],
     },
     {
       path: '/',
-      element: token ? <Home /> : <Navigate to='/auth' />,
-      children: [{path: ':type/:id', element: <ChatBody />}],
+      element: token ? <Home /> : <Navigate to="/auth" />,
+      children: [{ path: ':type/:id', element: <ChatBody /> }],
     },
-    {path: '*', element: <NotFound />},
+    { path: '*', element: <NotFound /> },
   ]);
   return routes;
 };

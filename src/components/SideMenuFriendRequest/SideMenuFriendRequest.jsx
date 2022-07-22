@@ -1,9 +1,9 @@
 import React from 'react';
-import {useEffect} from 'react';
-import {useState} from 'react';
-import {Warper, Content} from './SideMenuFriendRequest.style';
-import {useSelector} from 'react-redux';
-import {getProfileState} from '../../core/store/profile.slice';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { Warper, Content } from './SideMenuFriendRequest.style';
+import { useSelector } from 'react-redux';
+import { getProfileState } from '../../core/store/profile.slice';
 import RequestCard from '../RequestCard/RequestCard';
 
 const SideMenuFriendRequest = () => {
@@ -15,8 +15,8 @@ const SideMenuFriendRequest = () => {
   }, [profile]);
   return (
     <Warper>
-      <div className='flex justify-content-between align-items-center px-4 pt-4'>
-        <h3 className='side__title'>Requests</h3>
+      <div className="flex justify-content-between align-items-center px-4 pt-4">
+        <h3 className="side__title">Requests</h3>
       </div>
       <Content>
         {requests.map((req) => {

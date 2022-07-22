@@ -1,22 +1,21 @@
 import React from 'react';
-import {useForm} from 'react-hook-form';
-import {useDispatch, useSelector} from 'react-redux';
-import {getProfileState} from '../../core/store/profile.slice';
-import {DialogueWarper, Warper} from './ProfileMenu.style';
-import {useNavigate} from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfileState, setProfileInfo } from '../../core/store/profile.slice';
+import { DialogueWarper, Warper } from './ProfileMenu.style';
+import { useNavigate } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
-import {useRef} from 'react';
-import {useState} from 'react';
+import { useRef } from 'react';
+import { useState } from 'react';
 import axiosInstance from '../../core/axios/axiosInstance';
-import {FaUserCog, FaUserAltSlash} from 'react-icons/fa';
-import {IoLogOut} from 'react-icons/io5';
-import {closeDialogue, openDialogue} from '../../core/store/dialogue.slice';
-import {setLoadingState} from '../../core/store/loading.slice';
+import { FaUserCog, FaUserAltSlash } from 'react-icons/fa';
+import { IoLogOut } from 'react-icons/io5';
+import { closeDialogue, openDialogue } from '../../core/store/dialogue.slice';
+import { setLoadingState } from '../../core/store/loading.slice';
 import ProfileFormEdit from '../ProfileFormEdit/ProfileFormEdit';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 
-const ProfileMenu = () => {
-  const parent = document.querySelector('.profile__dropdown__hidden-menu');
+const ProfileMenu = ({ parent }) => {
   const changeProfileImage = useRef(null);
   const dispatch = useDispatch();
   const [image, setImage] = useState();
@@ -34,7 +33,7 @@ const ProfileMenu = () => {
     phone: profile.phone,
   };
 
-  const {control, handleSubmit, setValue, reset} = useForm({defaultValues});
+  const { control, handleSubmit, setValue, reset } = useForm({ defaultValues });
 
   useEffect(() => {
     for (const key in defaultValues) {
@@ -46,7 +45,7 @@ const ProfileMenu = () => {
   }, [profile]);
 
   const logout = () => {
-    parent.style.pointerEvents = 'none';
+    parent.current.hide();
     dispatch(
       openDialogue({
         show: true,
@@ -57,18 +56,16 @@ const ProfileMenu = () => {
           localStorage.clear();
           navigate('/auth');
           dispatch(closeDialogue());
-          parent.style.pointerEvents = 'auto';
         },
         onReject: () => {
           dispatch(closeDialogue());
-          parent.style.pointerEvents = 'auto';
         },
-      })
+      }),
     );
   };
 
   const deactivate = () => {
-    parent.style.pointerEvents = 'none';
+    parent.current.hide();
     dispatch(
       openDialogue({
         show: true,
@@ -86,26 +83,25 @@ const ProfileMenu = () => {
             dispatch(closeDialogue());
           }
           dispatch(setLoadingState(false));
-          parent.style.pointerEvents = 'auto';
         },
         onReject: () => {
           dispatch(closeDialogue());
-          parent.style.pointerEvents = 'auto';
         },
-      })
+      }),
     );
   };
 
-  const onImageUpload = (e) => {
+  const onImageUpload = async (e) => {
     setImage(URL.createObjectURL(e.target.files[0]));
     const formDate = new FormData();
     formDate.append('image', e.target.files[0]);
-    axiosInstance.patch('users/changeProfileImage', formDate);
-    parent.style.pointerEvents = 'auto';
+    const profileRes = await axiosInstance.patch('users/changeProfileImage', formDate);
+    dispatch(setProfileInfo({ ...profile, image: profileRes.data.image }));
+    parent.current.hide();
   };
 
   const openProfileDialogue = () => {
-    parent.style.pointerEvents = 'none';
+    parent.current.hide();
     dispatch(
       openDialogue({
         show: true,
@@ -123,18 +119,16 @@ const ProfileMenu = () => {
           } catch (err) {
             dispatch(setLoadingState(false));
           }
-          parent.style.pointerEvents = 'auto';
         },
         onReject: () => {
           dispatch(closeDialogue());
-          parent.style.pointerEvents = 'auto';
         },
-      })
+      }),
     );
   };
 
   const onSubmit = async (data) => {
-    const payload = {...data};
+    const payload = { ...data };
     for (const key in payload) {
       const element = payload[key];
       if (!element) delete payload[key];
@@ -148,7 +142,6 @@ const ProfileMenu = () => {
       console.log(err);
     }
     reset();
-    parent.style.pointerEvents = 'auto';
     dispatch(setLoadingState(false));
   };
 
@@ -162,27 +155,20 @@ const ProfileMenu = () => {
 
   return (
     <Warper>
-      <ReactTooltip />
+      {/* <ReactTooltip /> */}
       <img
-        crossOrigin='anonymous'
+        crossOrigin="anonymous"
         src={image || profile.image}
-        alt=''
-        data-tip='change profile image'
+        alt=""
+        data-tip="change profile image"
         onClick={() => {
-          parent.style.pointerEvents = 'none';
           changeProfileImage.current.click();
-          parent.style.pointerEvents = 'auto';
         }}
       />
-      <input
-        type='file'
-        ref={changeProfileImage}
-        hidden
-        onChange={onImageUpload}
-      />
-      <section className='profile__info'>
-        <span className='profile__info__name'>{profile.name}</span>
-        <span className='profile__info__email'>{profile.email}</span>
+      <input type="file" ref={changeProfileImage} hidden onChange={onImageUpload} />
+      <section className="profile__info">
+        <span className="profile__info__name">{profile.name}</span>
+        <span className="profile__info__email">{profile.email}</span>
       </section>
       <div onClick={openProfileDialogue}>
         <FaUserCog /> <span>Change profile info</span>

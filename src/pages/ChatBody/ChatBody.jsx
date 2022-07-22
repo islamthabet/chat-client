@@ -1,15 +1,12 @@
 import React from 'react';
-import {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {useLocation, useParams} from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useParams } from 'react-router-dom';
 import ChatInfo from '../../components/ChatInfo/ChatInfo';
 import Main from '../../components/Main/Main';
-import {
-  getActiveChatState,
-  setActiveChatState,
-} from '../../core/store/activeChat.slice';
-import {getProfileState} from '../../core/store/profile.slice';
-import {getRoomsState} from '../../core/store/room.slice';
+import { getActiveChatState, setActiveChatState } from '../../core/store/activeChat.slice';
+import { getProfileState } from '../../core/store/profile.slice';
+import { getRoomsState } from '../../core/store/room.slice';
 
 const ChatBody = () => {
   const dispatch = useDispatch();
@@ -19,14 +16,8 @@ const ChatBody = () => {
   const rooms = useSelector(getRoomsState);
   const param = useParams();
   useEffect(() => {
-    if (
-      param.id !== activeChat.id &&
-      profile?.id &&
-      location.pathname.includes('user')
-    ) {
-      const currentUser = profile.friends.filter(
-        (friend) => friend.id === param.id
-      );
+    if (param.id !== activeChat.id && profile?.id && location.pathname.includes('user')) {
+      const currentUser = profile.friends.filter((friend) => friend.id === param.id);
       dispatch(
         setActiveChatState({
           id: currentUser[0]?.id,
@@ -34,7 +25,7 @@ const ChatBody = () => {
           email: currentUser[0]?.email,
           image: currentUser[0]?.image,
           lastSeen: currentUser[0]?.lastSeen,
-        })
+        }),
       );
     }
   }, [profile]);
@@ -48,7 +39,7 @@ const ChatBody = () => {
           name: currentRoom[0]?.name,
           members: currentRoom[0]?.members,
           image: currentRoom[0]?.image,
-        })
+        }),
       );
     }
   }, [rooms]);

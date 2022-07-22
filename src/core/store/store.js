@@ -1,4 +1,4 @@
-import {configureStore} from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import dialogueSlice from './dialogue.slice';
 import loadingSlice from './loading.slice';
 import profileSlice from './profile.slice';

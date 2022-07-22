@@ -8,8 +8,7 @@ export const Warper = styled.div`
   height: 60px;
   width: 100%;
   border: 1px solid #eeedf0;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
-    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
   .chat- {
     &info {
       display: flex;

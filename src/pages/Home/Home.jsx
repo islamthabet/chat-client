@@ -1,21 +1,19 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Dialogue from '../../components/Dialogue/Dialogue';
 import Header from '../../components/Header/Header';
 import Notification from '../../components/Notification/Notification';
 import SideMenu from '../../components/SideMenu/SideMenu';
 import axiosInstance from '../../core/axios/axiosInstance';
-import {Content, Warper} from './Home.style';
-import {useDispatch, useSelector} from 'react-redux';
-import {setProfileInfo} from '../../core/store/profile.slice';
-import {setLoadingState} from '../../core/store/loading.slice';
+import { Content, Warper } from './Home.style';
+import { useDispatch, useSelector } from 'react-redux';
+import { setProfileInfo } from '../../core/store/profile.slice';
+import { setLoadingState } from '../../core/store/loading.slice';
 import ConfirmDialogue from '../../components/ConfirmDialogue/ConfirmDialogue';
 import socket from '../../core/socket/socket.client';
-import {Outlet} from 'react-router-dom';
-import {getFriendsState, setFriendState} from '../../core/store/friends.slice';
-import {
-  getActiveChatState,
-  setActiveChatState,
-} from '../../core/store/activeChat.slice';
+import { Outlet } from 'react-router-dom';
+import { getFriendsState, setFriendState } from '../../core/store/friends.slice';
+import { getActiveChatState, setActiveChatState } from '../../core/store/activeChat.slice';
+import { toast } from 'react-toastify';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -40,7 +38,7 @@ const Home = () => {
             setActiveChatState({
               ...activeChat,
               lastSeen: ev === 'userJoin' ? 'true' : new Date(),
-            })
+            }),
           );
         const updateFriends = friends.map((friend) => {
           const updateFriend = structuredClone(friend);
@@ -55,7 +53,11 @@ const Home = () => {
   };
 
   useEffect(() => {
+    socket.connect();
     getProfile();
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -67,6 +69,13 @@ const Home = () => {
       socket.removeListener('userLeft');
     };
   }, [friendsIds]);
+
+  useEffect(() => {
+    const event = new EventSource('http://localhost:5000/api/v1/event');
+    event.onmessage = (event) => {
+      toast.success(event.data);
+    };
+  }, []);
 
   return (
     <>

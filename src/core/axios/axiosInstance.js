@@ -1,6 +1,6 @@
 import axios from 'axios';
-import {toast} from 'react-toastify';
-import {setLoadingState} from '../store/loading.slice';
+import { toast } from 'react-toastify';
+import { setLoadingState } from '../store/loading.slice';
 
 export const axiosInstance = axios.create({
   baseURL: 'http://localhost:5000/api/v1/',
@@ -48,7 +48,7 @@ axiosInstance.interceptors.response.use(
 
     setLoadingState(false);
     Promise.reject(err);
-  }
+  },
 );
 
 export default axiosInstance;

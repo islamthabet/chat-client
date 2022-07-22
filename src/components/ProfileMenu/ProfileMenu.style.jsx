@@ -1,12 +1,8 @@
 import styled from 'styled-components';
 
 export const Warper = styled.div`
-  background-color: #fff;
-  border-radius: 1rem;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   display: flex;
   flex-direction: column;
-  width: 250px;
   overflow: hidden;
   img {
     display: block;
@@ -15,6 +11,9 @@ export const Warper = styled.div`
     height: 80px;
     object-fit: cover;
     object-position: center;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
   .profile__info {
     display: flex;

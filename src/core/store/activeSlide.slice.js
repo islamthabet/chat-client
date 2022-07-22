@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   section: 1,
@@ -14,7 +14,7 @@ const activeSlideSlice = createSlice({
   },
 });
 
-export const {setActiveSlideState} = activeSlideSlice.actions;
+export const { setActiveSlideState } = activeSlideSlice.actions;
 
 export const getActiveSlideState = (state) => state.activeSlide.section;
 

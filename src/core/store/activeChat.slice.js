@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   profile: {},
@@ -14,7 +14,7 @@ const activeChatSlice = createSlice({
   },
 });
 
-export const {setActiveChatState} = activeChatSlice.actions;
+export const { setActiveChatState } = activeChatSlice.actions;
 
 export const getActiveChatState = (state) => state.activeChat.profile;
 

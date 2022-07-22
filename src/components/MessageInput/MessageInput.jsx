@@ -1,18 +1,18 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {Warper} from './MessageInput.style';
+import React, { useState, useEffect, useRef } from 'react';
+import { Warper } from './MessageInput.style';
 import Emoji from '../Emoji/Emoji';
-import {Button} from 'primereact/button';
-import {ImAttachment} from 'react-icons/im';
-import {MdEmojiEmotions, MdOutlineMic} from 'react-icons/md';
+import { Button } from 'primereact/button';
+import { ImAttachment } from 'react-icons/im';
+import { MdEmojiEmotions, MdOutlineMic } from 'react-icons/md';
 
-import {useSelector} from 'react-redux';
-import {getProfileState} from '../../core/store/profile.slice';
-import {getActiveChatState} from '../../core/store/activeChat.slice';
+import { useSelector } from 'react-redux';
+import { getProfileState } from '../../core/store/profile.slice';
+import { getActiveChatState } from '../../core/store/activeChat.slice';
 import axiosInstance from '../../core/axios/axiosInstance';
 import socket from '../../core/socket/socket.client';
-import {useParams} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-const MessageInput = ({setMessages}) => {
+const MessageInput = ({ setMessages }) => {
   const params = useParams();
   const profile = useSelector(getProfileState);
   const activeChat = useSelector(getActiveChatState);
@@ -52,7 +52,7 @@ const MessageInput = ({setMessages}) => {
             toRoom: activeChat.id,
           };
     await axiosInstance.post('message', data);
-    socket.emit('message', {message, to: activeChat.id});
+    socket.emit('message', { message, to: activeChat.id });
     setMessages((perv) => {
       const arr = [...perv];
       arr.push({
@@ -76,23 +76,24 @@ const MessageInput = ({setMessages}) => {
     <Warper>
       <ImAttachment onClick={() => file.current.click()} />
       <textarea
-        placeholder='Type You Text'
+        placeholder="Type You Text"
         value={message}
         onChange={(e) => {
           setMessage(e.target.value);
-        }}></textarea>
+        }}
+      ></textarea>
       <MdEmojiEmotions
-        id='emoji-icon'
+        id="emoji-icon"
         onClick={() => {
           setShowEmoji(!showEmoji);
         }}
-        size='2rem'
+        size="2rem"
       />
-      <MdOutlineMic size='2rem' />
+      <MdOutlineMic size="2rem" />
       <Button
-        icon='pi pi-send'
-        className='p-button-rounded'
-        aria-label='send'
+        icon="pi pi-send"
+        className="p-button-rounded"
+        aria-label="send"
         onClick={sendMessage}
       />
       {showEmoji && (
@@ -105,7 +106,7 @@ const MessageInput = ({setMessages}) => {
           }}
         />
       )}
-      <input type='file' hidden ref={file} />
+      <input type="file" hidden ref={file} />
     </Warper>
   );
 };

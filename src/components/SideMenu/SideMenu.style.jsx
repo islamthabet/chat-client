@@ -1,4 +1,4 @@
-import {InputText} from 'primereact/inputtext';
+import { InputText } from 'primereact/inputtext';
 import styled from 'styled-components';
 
 export const Warper = styled.aside`
@@ -13,8 +13,7 @@ export const Warper = styled.aside`
 `;
 
 export const Content = styled.div`
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 
   button {
     background: linear-gradient(
@@ -37,8 +36,7 @@ export const Content = styled.div`
       outline: none;
     }
     :focus {
-      box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(180, 53, 244, 1),
-        0 1px 2px 0 black;
+      box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(180, 53, 244, 1), 0 1px 2px 0 black;
     }
   }
 `;

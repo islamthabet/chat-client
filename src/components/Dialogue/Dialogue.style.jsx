@@ -21,8 +21,7 @@ export const Warper = styled.div`
     background-color: #fff;
     border-radius: 20px;
     padding: 1rem;
-    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px,
-      rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
     width: ${(props) => props.width};
     height: ${(props) => props.height};
     &__title {

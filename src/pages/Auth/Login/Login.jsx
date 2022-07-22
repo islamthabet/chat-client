@@ -1,14 +1,15 @@
 import React from 'react';
-import {useForm, Controller} from 'react-hook-form';
-import {Form, Title} from '../Auth.style';
-import {InputText} from 'primereact/inputtext';
-import {Password} from 'primereact/password';
-import {classNames} from 'primereact/utils';
-import {Button} from 'primereact/button';
+import { useForm, Controller } from 'react-hook-form';
+import { Form, Title } from '../Auth.style';
+import { InputText } from 'primereact/inputtext';
+import { Password } from 'primereact/password';
+import { classNames } from 'primereact/utils';
+import { Button } from 'primereact/button';
 import axiosInstance from '../../../core/axios/axiosInstance';
-import {useNavigate} from 'react-router-dom';
-import {useDispatch} from 'react-redux';
-import {setLoadingState} from '../../../core/store/loading.slice';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setLoadingState } from '../../../core/store/loading.slice';
+import socket from '../../../core/socket/socket.client';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -20,10 +21,10 @@ const Login = () => {
 
   const {
     control,
-    formState: {errors},
+    formState: { errors },
     handleSubmit,
     reset,
-  } = useForm({defaultValues});
+  } = useForm({ defaultValues });
 
   const onSubmit = async (data) => {
     dispatch(setLoadingState(true));
@@ -32,6 +33,7 @@ const Login = () => {
       localStorage.setItem('token', res.data.token.accessToken);
       localStorage.setItem('refreshToken', res.data.token.refreshToken);
       localStorage.setItem('user', JSON.stringify(res.data.user));
+      socket.disconnect();
       navigate('/');
     } catch (error) {
       dispatch(setLoadingState(false));
@@ -39,20 +41,18 @@ const Login = () => {
   };
 
   const getFormErrorMessage = (name) => {
-    return (
-      errors[name] && <small className='p-error'>{errors[name].message}</small>
-    );
+    return errors[name] && <small className="p-error">{errors[name].message}</small>;
   };
 
   return (
     <>
       <Title>Login</Title>
-      <Form onSubmit={handleSubmit(onSubmit)} className='p-fluid w-25rem'>
-        <div className='field'>
-          <span className='p-float-label p-input-icon-right'>
-            <i className='pi pi-envelope' />
+      <Form onSubmit={handleSubmit(onSubmit)} className="p-fluid w-25rem">
+        <div className="field">
+          <span className="p-float-label p-input-icon-right">
+            <i className="pi pi-envelope" />
             <Controller
-              name='email'
+              name="email"
               control={control}
               rules={{
                 required: 'Email is required.',
@@ -61,53 +61,49 @@ const Login = () => {
                   message: 'Invalid email address. E.g. example@email.com',
                 },
               }}
-              render={({field, fieldState}) => (
+              render={({ field, fieldState }) => (
                 <InputText
                   id={field.name}
                   {...field}
-                  className={classNames({'p-invalid': fieldState.error})}
+                  className={classNames({ 'p-invalid': fieldState.error })}
                 />
               )}
             />
-            <label
-              htmlFor='email'
-              className={classNames({'p-error': !!errors.email})}>
+            <label htmlFor="email" className={classNames({ 'p-error': !!errors.email })}>
               Email*
             </label>
           </span>
           {getFormErrorMessage('email')}
         </div>
 
-        <div className='field'>
-          <span className='p-float-label'>
+        <div className="field">
+          <span className="p-float-label">
             <Controller
-              name='password'
+              name="password"
               control={control}
-              rules={{required: 'Password is required.'}}
-              render={({field, fieldState}) => (
+              rules={{ required: 'Password is required.' }}
+              render={({ field, fieldState }) => (
                 <Password
                   id={field.name}
                   {...field}
                   feedback={false}
                   toggleMask
-                  className={classNames({'p-invalid': fieldState.error})}
+                  className={classNames({ 'p-invalid': fieldState.error })}
                 />
               )}
             />
-            <label
-              htmlFor='password'
-              className={classNames({'p-error': errors.password})}>
+            <label htmlFor="password" className={classNames({ 'p-error': errors.password })}>
               Password*
             </label>
           </span>
           {getFormErrorMessage('password')}
         </div>
-        <div className='flex gap-3'>
-          <Button label='Login' />
+        <div className="flex gap-3">
+          <Button label="Login" />
           <Button
-            label='create account'
-            className='p-button-secondary'
-            type='button'
+            label="create account"
+            className="p-button-secondary"
+            type="button"
             onClick={() => navigate('register')}
           />
         </div>
