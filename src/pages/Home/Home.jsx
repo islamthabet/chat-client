@@ -71,7 +71,7 @@ const Home = () => {
   }, [friendsIds]);
 
   useEffect(() => {
-    const event = new EventSource('http://localhost:5000/api/v1/event');
+    const event = new EventSource('https://chat-2023.herokuapp.com/api/v1/event');
     event.onmessage = (event) => {
       toast.success(event.data);
     };
