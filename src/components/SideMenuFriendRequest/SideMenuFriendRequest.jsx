@@ -1,8 +1,6 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { Warper, Content } from './SideMenuFriendRequest.style';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Warper, Content } from './SideMenuFriendRequest.style';
 import { getProfileState } from '../../core/store/profile.slice';
 import RequestCard from '../RequestCard/RequestCard';
 
@@ -11,7 +9,7 @@ const SideMenuFriendRequest = () => {
   const [requests, setRequests] = useState([]);
 
   useEffect(() => {
-    setRequests(profile.sendRequest);
+    setRequests([...profile.sendRequest, ...profile.askToJoinRoom]);
   }, [profile]);
   return (
     <Warper>
@@ -22,9 +20,9 @@ const SideMenuFriendRequest = () => {
         {requests.map((req) => {
           return (
             <RequestCard
-              key={req.id}
+              key={req._id}
               image={req.image}
-              id={req.id}
+              id={req._id}
               name={req.name}
               country={req.country}
             />

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Warper = styled.div`
+  position: relative;
   padding: 0 1rem;
   display: flex;
   justify-content: space-between;
@@ -53,6 +54,7 @@ export const Warper = styled.div`
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
       svg {
         font-size: 1.5rem;
         color: #a5acb5;

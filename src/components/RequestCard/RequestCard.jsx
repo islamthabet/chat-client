@@ -6,11 +6,11 @@ import socket from '../../core/socket/socket.client';
 
 const RequestCard = ({ id, image, name, country }) => {
   const acceptFriendRequest = async () => {
-    await axiosInstance.patch(`users/acceptRequest/${id}`);
+    await axiosInstance.patch(`${country ? 'users' : 'rooms'}/acceptRequest/${id}`);
     socket.emit('accept-request', id);
   };
   const rejectFriendRequest = async () => {
-    await axiosInstance.patch(`users/rejectRequest/${id}`);
+    await axiosInstance.patch(`${country ? 'users' : 'rooms'}/rejectRequest/${id}`);
     socket.emit('reject-request', id);
   };
   return (

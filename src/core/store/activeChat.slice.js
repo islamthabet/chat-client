@@ -11,10 +11,11 @@ const activeChatSlice = createSlice({
     setActiveChatState: (state, action) => {
       state.profile = action.payload;
     },
+    resetActiveChat: () => initialState,
   },
 });
 
-export const { setActiveChatState } = activeChatSlice.actions;
+export const { setActiveChatState, resetActiveChat } = activeChatSlice.actions;
 
 export const getActiveChatState = (state) => state.activeChat.profile;
 

@@ -26,6 +26,9 @@ const RoomList = () => {
             name={room.name}
             image={room.image}
             members={room.members}
+            admins={room.admins}
+            createdBy={room.createdBy}
+            userPendingRequests={room.userPendingRequests}
           />
         );
       })}

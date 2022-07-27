@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getActiveChatState, setActiveChatState } from '../../core/store/activeChat.slice';
 import { Warper } from './RoomCard.style';
 
-const RoomCard = ({ id, name, image, members }) => {
+const RoomCard = ({ id, name, image, members, admins, createdBy, userPendingRequests }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const activeChat = useSelector(getActiveChatState);
@@ -13,7 +13,9 @@ const RoomCard = ({ id, name, image, members }) => {
       isActive={activeChat.id === id}
       onClick={() => {
         if (activeChat.id === id) return;
-        dispatch(setActiveChatState({ id, name, members, image }));
+        dispatch(
+          setActiveChatState({ id, name, members, image, admins, createdBy, userPendingRequests }),
+        );
         navigate(`/room/${id}`);
       }}
     >

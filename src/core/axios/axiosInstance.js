@@ -3,7 +3,8 @@ import { toast } from 'react-toastify';
 import { setLoadingState } from '../store/loading.slice';
 
 export const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api/v1/',
+  // baseURL: 'http://localhost:5000/api/v1/',
+  baseURL: 'https://chat-2023.herokuapp.com/api/v1/',
 });
 
 axiosInstance.interceptors.request.use((config) => {

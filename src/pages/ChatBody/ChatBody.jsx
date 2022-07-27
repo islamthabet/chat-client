@@ -39,6 +39,9 @@ const ChatBody = () => {
           name: currentRoom[0]?.name,
           members: currentRoom[0]?.members,
           image: currentRoom[0]?.image,
+          admins: currentRoom[0]?.admins,
+          createdBy: currentRoom[0]?.createdBy,
+          userPendingRequests: currentRoom[0]?.userPendingRequests,
         }),
       );
     }
