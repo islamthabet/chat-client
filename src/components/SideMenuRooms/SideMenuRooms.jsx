@@ -4,10 +4,10 @@ import { MultiSelect } from 'primereact/multiselect';
 import { InputText } from 'primereact/inputtext';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeDialogue, openDialogue } from '../../core/store/dialogue.slice';
-import { getFriendsState } from '../../core/store/friends.slice';
 import { RoundInput, Warper } from './SideMenuRooms.style';
 import axiosInstance from '../../core/axios/axiosInstance';
 import RoomList from '../RoomList/RoomList';
+import { getProfileState } from '../../core/store/profile.slice';
 
 const SideMenuRooms = () => {
   const [search, setSearch] = useState('');
@@ -62,7 +62,7 @@ const SideMenuRooms = () => {
 const DialogueBody = () => {
   const [formVal, setFormVal] = useState({ name: '', userPendingRequests: [] });
   const dispatch = useDispatch();
-  const friends = useSelector(getFriendsState);
+  const friends = useSelector(getProfileState).friends;
   const handelSubmit = async (e) => {
     e.preventDefault();
     await axiosInstance.post('rooms', formVal);

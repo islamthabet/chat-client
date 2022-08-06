@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Button } from 'primereact/button';
 import ContactList from '../ContactList/ContactList';
 import { Warper, RoundInput } from './SideMenuChats.style';
 import { useDispatch } from 'react-redux';
 import { closeDialogue, openDialogue } from '../../core/store/dialogue.slice';
 import NewChat from '../NewChat/NewChat';
 import axiosInstance from '../../core/axios/axiosInstance';
-import { setFriendState } from '../../core/store/friends.slice';
+import { setFriendState } from '../../core/store/profile.slice';
 
 const SideMenuChats = () => {
   const dispatch = useDispatch();

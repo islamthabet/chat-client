@@ -1,18 +1,25 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Warper } from './ChatInfo.style';
 import { RiPhoneFill } from 'react-icons/ri';
 import { BsCameraVideoFill, BsThreeDots } from 'react-icons/bs';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getActiveChatState } from '../../core/store/activeChat.slice';
 import { useLocation } from 'react-router-dom';
 import { sinceTimeAgo } from '../../util/sinceTimeAgo';
 import ChatMenu from '../ChatMenu/ChatMenu';
-import { useState } from 'react';
+import socket, { peerId } from '../../core/socket/socket.client';
+import { startCall } from '../../core/store/call.slice';
 
 const ChatInfo = () => {
+  const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const activeChat = useSelector(getActiveChatState);
   const location = useLocation();
+
+  const makeCall = () => {
+    dispatch(startCall());
+    socket.emit('start-call', { to: activeChat.id, from: peerId });
+  };
 
   return (
     <>
@@ -21,7 +28,7 @@ const ChatInfo = () => {
           <img className="chat-info__image" src={activeChat.image} alt="" crossOrigin="anonymise" />
           <div className="chat-info__titles">
             <span className="chat-info__titles--main">{activeChat.name}</span>
-            {location.pathname.includes('user') ? (
+            {location?.pathname?.includes('user') ? (
               <span className="chat-info__titles--sub">
                 {activeChat.lastSeen === 'true'
                   ? 'online'
@@ -39,7 +46,7 @@ const ChatInfo = () => {
           </div>
         </div>
         <div className="chat-icons">
-          <RiPhoneFill />
+          <RiPhoneFill onClick={makeCall} />
           <BsCameraVideoFill />
           <BsThreeDots id="open-chat-dots" onClick={() => setShowMenu(!showMenu)} />
         </div>

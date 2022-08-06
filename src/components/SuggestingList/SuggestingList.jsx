@@ -1,10 +1,8 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SuggestingCard from '../SuggestingCard/SuggestingCard';
 import { Warper } from './SuggestingList.style';
 
 import axiosInstance from '../../core/axios/axiosInstance';
-import { useEffect } from 'react';
 import socket from '../../core/socket/socket.client';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfileState, setProfileInfo } from '../../core/store/profile.slice';
@@ -25,13 +23,11 @@ const SuggestingList = () => {
       getUsers();
     });
     socket.on('friend-request', (user) => {
-      console.log(user);
       setSuggesting((perv) => {
         const arr = [...perv];
-        const newArr = arr.filter((sug) => {
+        return arr.filter((sug) => {
           if (sug.id !== user.id) return sug;
         });
-        return newArr;
       });
       const updateProfile = structuredClone(profile);
       updateProfile.sendRequest.push(user);
@@ -42,6 +38,40 @@ const SuggestingList = () => {
       socket.removeListener('friend-request');
     };
   }, [suggesting, profile]);
+
+  useEffect(() => {
+    socket.on('accept-friend-request', (user) => {
+      const newProfile = structuredClone(profile);
+      const newRequested = profile.sendRequest.filter((userRequest) => {
+        if (user._id !== userRequest._id) return userRequest;
+      });
+      newProfile.sendRequest = newRequested;
+      newProfile.friends.push(user);
+      dispatch(setProfileInfo(newProfile));
+
+      getUsers();
+    });
+
+    socket.on('reject-friend-request', (user) => {
+      const newProfile = structuredClone(profile);
+      console.log({ first: newProfile });
+      const newRequested = profile.sendRequest.filter((userRequest) => {
+        console.log(user, userRequest);
+        if (user._id !== userRequest._id) return userRequest;
+      });
+      newProfile.sendRequest = newRequested;
+      console.log({ newProfile });
+      dispatch(setProfileInfo(newProfile));
+
+      getUsers();
+    });
+
+    return () => {
+      socket.removeListener('accept-friend-request');
+      socket.removeListener('reject-friend-request');
+    };
+  }, [profile]);
+
   return (
     <Warper>
       {suggesting.map((suggest) => {

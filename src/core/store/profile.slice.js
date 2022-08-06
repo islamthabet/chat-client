@@ -23,13 +23,16 @@ const profileSlice = createSlice({
     setProfileInfo: (state, action) => {
       state.profileState = { ...action.payload };
     },
+    setFriendState: (state, action) => {
+      state.profileState.friends = action.payload;
+    },
     resetProfile: (state, action) => {
       return initialState;
     },
   },
 });
 
-export const { setProfileInfo, resetProfile } = profileSlice.actions;
+export const { setProfileInfo, resetProfile, setFriendState } = profileSlice.actions;
 
 export const getProfileState = (state) => state.profile.profileState;
 

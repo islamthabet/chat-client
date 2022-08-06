@@ -20,8 +20,8 @@ const ChatMenu = ({ showMenu, setShowMenu }) => {
   const dispatch = useDispatch();
   const closeMenu = (e) => {
     if (
-      !e.path.includes(chatMenu.current) &&
-      !e.path.includes(document.querySelector('#open-chat-dots'))
+      !e?.path?.includes(chatMenu.current) &&
+      !e?.path?.includes(document.querySelector('#open-chat-dots'))
     ) {
       setShowMenu(false);
     }
@@ -47,7 +47,6 @@ const ChatMenu = ({ showMenu, setShowMenu }) => {
                     dispatch(closeDialogue());
                     const newProfile = structuredClone(profile);
                     const newFriends = newProfile.friends.filter((friend) => {
-                      console.log(friend);
                       if (friend.id !== activeChat.id) return friend;
                     });
                     newProfile.friends = newFriends;

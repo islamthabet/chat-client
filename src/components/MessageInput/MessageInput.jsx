@@ -34,10 +34,6 @@ const MessageInput = ({ setMessages }) => {
     setShowEmoji(false);
   };
 
-  const onAttachFile = (e) => {
-    console.log(e.target.files[0]);
-  };
-
   const sendMessage = async () => {
     let data =
       params.type === 'user'

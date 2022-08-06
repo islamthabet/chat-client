@@ -6,19 +6,18 @@ import SideMenu from '../../components/SideMenu/SideMenu';
 import axiosInstance from '../../core/axios/axiosInstance';
 import { Content, Warper } from './Home.style';
 import { useDispatch, useSelector } from 'react-redux';
-import { setProfileInfo } from '../../core/store/profile.slice';
+import { getProfileState, setFriendState, setProfileInfo } from '../../core/store/profile.slice';
 import { setLoadingState } from '../../core/store/loading.slice';
 import ConfirmDialogue from '../../components/ConfirmDialogue/ConfirmDialogue';
 import socket from '../../core/socket/socket.client';
 import { Outlet } from 'react-router-dom';
-import { getFriendsState, setFriendState } from '../../core/store/friends.slice';
 import { getActiveChatState, setActiveChatState } from '../../core/store/activeChat.slice';
-import { toast } from 'react-toastify';
+import Call from '../../components/Call/Call';
 
 const Home = () => {
   const dispatch = useDispatch();
   const [friendsIds, setFriendsIds] = useState([]);
-  const friends = useSelector(getFriendsState);
+  const friends = useSelector(getProfileState).friends;
   const activeChat = useSelector(getActiveChatState);
   const getProfile = async () => {
     const user = await axiosInstance.get('users/me');
@@ -26,7 +25,6 @@ const Home = () => {
     dispatch(setFriendState(user.data.friends));
     setFriendsIds(user.data.friends.map((friend) => friend.id));
     localStorage.setItem('user', JSON.stringify(user.data));
-    if (localStorage.getItem('user')) socket;
     dispatch(setLoadingState(false));
   };
 
@@ -70,12 +68,12 @@ const Home = () => {
     };
   }, [friendsIds]);
 
-  useEffect(() => {
-    const event = new EventSource('https://chat-2023.herokuapp.com/api/v1/event');
-    event.onmessage = (event) => {
-      toast.success(event.data);
-    };
-  }, []);
+  // useEffect(() => {
+  // const event = new EventSource('http://localhost:5000/api/v1/event');
+  // event.onmessage = (event) => {
+  //   toast.success(event.data);
+  //   // };
+  // }, []);
 
   return (
     <>
@@ -89,6 +87,7 @@ const Home = () => {
       </Warper>
       <Dialogue />
       <ConfirmDialogue />
+      <Call />
     </>
   );
 };

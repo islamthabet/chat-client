@@ -19,10 +19,9 @@ const Suggesting = ({ id, image, name, info, setSuggesting }) => {
           await axiosInstance.post(`users/sendFriendRequest/${id}`);
           setSuggesting((perv) => {
             const arr = [...perv];
-            const newArr = arr.filter((sug) => {
+            return arr.filter((sug) => {
               if (sug.id !== id) return sug;
             });
-            return newArr;
           });
           socket.emit('friend-request', id);
         }}
