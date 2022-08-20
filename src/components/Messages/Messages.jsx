@@ -50,7 +50,7 @@ const Messages = ({ messages, setMessages }) => {
     <Warper ref={messagesWarper}>
       {messages.map((message, index) => (
         <Message key={index} sended={message.from.id === profile.id}>
-          <span>{message.message}</span>
+          <div>{message.message}</div>
         </Message>
       ))}
     </Warper>

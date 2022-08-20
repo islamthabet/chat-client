@@ -29,7 +29,11 @@ const Register = () => {
     confirmPassword: '',
     DOB: '',
     gender: '',
-    country: '',
+    country: {
+      title: '',
+      type: 'Point',
+      coordinates: [],
+    },
     phone: '',
   };
 
@@ -37,7 +41,6 @@ const Register = () => {
     control,
     formState: { errors },
     handleSubmit,
-    reset,
   } = useForm({ defaultValues });
 
   const getCountries = async () => {
@@ -45,7 +48,11 @@ const Register = () => {
     const data = res.data.map((country) => {
       return {
         name: country.name.common,
-        value: country.name.common,
+        value: {
+          title: country.name.common,
+          type: 'Point',
+          coordinates: country.latlng,
+        },
         flag: country.flags.png,
       };
     });
@@ -65,7 +72,8 @@ const Register = () => {
       localStorage.setItem('user', JSON.stringify(res.data.user));
       socket.emit('new-user');
       socket.disconnect();
-      navigate('/');
+      // navigate('/');
+      location.assign('/');
     } catch (err) {
       dispatch(setLoadingState(false));
     }

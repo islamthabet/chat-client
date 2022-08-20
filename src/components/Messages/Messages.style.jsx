@@ -11,15 +11,20 @@ export const Warper = styled.div`
 
 export const Message = styled.div`
   text-align: ${(props) => (props.sended ? 'right' : 'left')};
-  padding: 0.5rem 0;
-  span {
+
+  padding-bottom: 0.5rem;
+  div {
+    white-space: pre-wrap;
+    max-width: 75%;
+    display: inline-block;
     background: ${(props) =>
       props.sended
         ? '#e9eff4'
         : 'linear-gradient( 90deg, rgba(116,66,233,1) 0%, rgba(152,59,240,1) 50%, rgba(180,53,244,1) 100% );'};
     color: ${(props) => (props.sended ? '#30333d' : '#fff')};
     padding: 0.5rem 2rem;
+    border-radius: 20px;
 
-    border-radius: ${(props) => (props.sended ? '0 25px 0 25px' : '25px 0 25px 0')};
+    /* border-radius: ${(props) => (props.sended ? '0 25px 0 25px' : '25px 0 25px 0')}; */
   }
 `;

@@ -25,15 +25,32 @@ export const Warper = styled.div`
     }
   }
 
-  textarea {
+  .place-holder-message {
+    position: absolute;
+    left: 2rem;
+    user-select: none;
+    z-index: 0;
+    color: #717179;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+  }
+  .chat__input {
+    z-index: 1;
     border: none;
     height: 100%;
+    max-height: 400px;
     padding: 1.25rem 1rem;
-    width: 75%;
+    width: 100%;
+    max-width: calc(100vw - 600px - 2rem - 6rem - 1.15rem);
     resize: none;
     font-family: 'Poppins', sans-serif;
     font-size: 1rem;
-    ::placeholder {
+    overflow: auto;
+
+    :focus {
+      outline: none;
+    }
+    .placeholder {
       color: #8d8d8d;
     }
 

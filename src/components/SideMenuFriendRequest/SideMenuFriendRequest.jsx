@@ -26,7 +26,7 @@ const SideMenuFriendRequest = () => {
               image={req.image}
               id={req._id}
               name={req.name}
-              country={req.country}
+              country={req?.country?.title}
             />
           );
         })}

@@ -13,13 +13,15 @@ import socket from '../../core/socket/socket.client';
 import { useParams } from 'react-router-dom';
 
 const MessageInput = ({ setMessages }) => {
+  const messageInput = useRef();
+  const [shiftDown, setShiftDown] = useState(false);
+  const [messagePlaceHolder, setPlaceHolder] = useState(true);
   const params = useParams();
   const profile = useSelector(getProfileState);
   const activeChat = useSelector(getActiveChatState);
   const emojiRef = useRef();
   const file = useRef();
   const [showEmoji, setShowEmoji] = useState(false);
-  const [message, setMessage] = useState('');
 
   const handleClickOnBody = (e) => {
     const IsEmojiIcon = e.composedPath().some((path) => {
@@ -38,7 +40,7 @@ const MessageInput = ({ setMessages }) => {
     let data =
       params.type === 'user'
         ? {
-            message,
+            message: messageInput.current.innerText,
             from: profile.id,
             toUser: activeChat.id,
           }
@@ -48,18 +50,18 @@ const MessageInput = ({ setMessages }) => {
             toRoom: activeChat.id,
           };
     await axiosInstance.post('message', data);
-    socket.emit('message', { message, to: activeChat.id });
+    socket.emit('message', { message: messageInput.current.innerText, to: activeChat.id });
     setMessages((perv) => {
       const arr = [...perv];
       arr.push({
-        message,
+        message: messageInput.current.innerText,
         from: profile,
         to: activeChat,
         createdAt: new Date(),
       });
       return arr;
     });
-    setMessage('');
+    messageInput.current.innerText = '';
   };
 
   useEffect(() => {
@@ -70,14 +72,28 @@ const MessageInput = ({ setMessages }) => {
   }, []);
   return (
     <Warper>
-      <ImAttachment onClick={() => file.current.click()} />
-      <textarea
-        placeholder="Type You Text"
-        value={message}
-        onChange={(e) => {
-          setMessage(e.target.value);
+      {/* <ImAttachment onClick={() => file.current.click()} /> */}
+      <div
+        className="chat__input"
+        contentEditable={true}
+        ref={messageInput}
+        onKeyDown={(e) => {
+          if (e.target.innerText.length < 1) setPlaceHolder(true);
+          else setPlaceHolder(false);
+          if (e.key === 'Shift') setShiftDown(true);
+          if (e.key === 'Enter' && !shiftDown) {
+            e.preventDefault();
+            sendMessage();
+          }
         }}
-      ></textarea>
+        onKeyUp={(e) => {
+          if (e.target.innerText.length < 1) setPlaceHolder(true);
+          else setPlaceHolder(false);
+          if (e.key === 'Shift') setShiftDown(false);
+        }}
+      ></div>
+      {messagePlaceHolder && <div className="place-holder-message">Type Your Message</div>}
+
       <MdEmojiEmotions
         id="emoji-icon"
         onClick={() => {
@@ -85,7 +101,7 @@ const MessageInput = ({ setMessages }) => {
         }}
         size="2rem"
       />
-      <MdOutlineMic size="2rem" />
+      {/* <MdOutlineMic size="2rem" /> */}
       <Button
         icon="pi pi-send"
         className="p-button-rounded"
@@ -96,9 +112,7 @@ const MessageInput = ({ setMessages }) => {
         <Emoji
           ref={emojiRef}
           onEmojiSelect={(e) => {
-            setMessage((prev) => {
-              return `${prev}${e.native}`;
-            });
+            messageInput.current.innerText += e.native;
           }}
         />
       )}

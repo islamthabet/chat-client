@@ -9,7 +9,7 @@ import NotFound from '../../pages/NotFound/NotFound';
 
 const Routes = () => {
   const token = localStorage.getItem('token');
-  const routes = useRoutes([
+  return useRoutes([
     {
       path: 'auth',
       element: <Auth />,
@@ -25,7 +25,6 @@ const Routes = () => {
     },
     { path: '*', element: <NotFound /> },
   ]);
-  return routes;
 };
 
 export default Routes;

@@ -82,7 +82,7 @@ const SuggestingList = () => {
             id={suggest.id}
             image={suggest.image}
             name={suggest.name}
-            info={suggest.country}
+            info={suggest.country.title}
           />
         );
       })}

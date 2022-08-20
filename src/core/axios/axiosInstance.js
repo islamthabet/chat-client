@@ -34,7 +34,6 @@ axiosInstance.interceptors.response.use(
             toastId: err.response.data.message.replaceAll(' ', '_'),
           });
         break;
-
       case 401:
         toast.error(err.response.data.message, {
           toastId: err.response.data.message.replaceAll(' ', '_'),
@@ -42,8 +41,14 @@ axiosInstance.interceptors.response.use(
         localStorage.clear();
         location.assign('auth');
         break;
-
+      case 500:
+        toast.error('something went wrong');
+        break;
+      case 404:
+        toast.error('No Page Here');
+        break;
       default:
+        toast.error(err.response.data.message);
         break;
     }
 

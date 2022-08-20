@@ -9,11 +9,13 @@ import SendCall from './SendCall';
 const Call = () => {
   const dispatch = useDispatch();
   const [info, setInfo] = useState();
+  const [answered, setAnswered] = useState(false);
   const [fromPeerId, setFromPeerId] = useState('');
   const onCall = useSelector(getCallState);
   const [audioStream, setStream] = useState();
   useEffect(() => {
     if (audioStream) {
+      setAnswered(true);
       const audioWarper = document.getElementById('audio-warper');
       const audio = document.createElement('audio');
       audio.srcObject = audioStream;
@@ -46,7 +48,7 @@ const Call = () => {
       timeOut = setTimeout(() => {
         setInfo({});
         socket.emit('no-answer', { to: info._id });
-      }, 90000);
+      }, 30000);
     });
     socket.on('close-call', () => {
       dispatch(endCall());
@@ -61,7 +63,7 @@ const Call = () => {
     <>
       {(onCall || info?.name) && (
         <Warper id="audio-warper">
-          {onCall && <SendCall />}
+          {onCall && <SendCall answered={answered} />}
           {info?.name && (
             <ComingCall
               id={info._id}

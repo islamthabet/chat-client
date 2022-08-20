@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { AiTwotoneMessage } from 'react-icons/ai';
 import { RiPhoneFill } from 'react-icons/ri';
 import { FaUserClock, FaUsers } from 'react-icons/fa';
@@ -9,7 +9,6 @@ import { OverlayPanel } from 'primereact/overlaypanel';
 import ProfileMenu from '../ProfileMenu/ProfileMenu';
 import { getActiveSlideState, setActiveSlideState } from '../../core/store/activeSlide.slice';
 import { useLocation } from 'react-router-dom';
-import { useRef } from 'react';
 
 const HeaderNavigation = () => {
   const op = useRef();
@@ -28,14 +27,14 @@ const HeaderNavigation = () => {
         className={activeSection === 1 && 'active'}
         onClick={() => dispatch(setActiveSlideState(1))}
       />
-      <RiPhoneFill
+      {/* <RiPhoneFill
         className={activeSection === 2 && 'active'}
         onClick={() => dispatch(setActiveSlideState(2))}
-      />
-      <FaUsers
+      /> */}
+      {/* <FaUsers
         className={activeSection === 3 && 'active'}
         onClick={() => dispatch(setActiveSlideState(3))}
-      />
+      /> */}
       <FaUserClock
         className={activeSection === 4 && 'active'}
         onClick={() => dispatch(setActiveSlideState(4))}

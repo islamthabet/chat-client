@@ -47,7 +47,7 @@ const ChatInfo = () => {
         </div>
         <div className="chat-icons">
           <RiPhoneFill onClick={makeCall} />
-          <BsCameraVideoFill />
+          {/* <BsCameraVideoFill /> */}
           <BsThreeDots id="open-chat-dots" onClick={() => setShowMenu(!showMenu)} />
         </div>
         <ChatMenu showMenu={showMenu} setShowMenu={setShowMenu} />

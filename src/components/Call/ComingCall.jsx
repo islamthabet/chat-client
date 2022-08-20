@@ -13,7 +13,10 @@ const ComingCall = ({ id, name, image, setInfo, from, timeOut }) => {
       .then((stream) => {
         peer.call(from, stream);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        rejectCall();
+        console.log(err);
+      });
   };
   const rejectCall = () => {
     setInfo({});

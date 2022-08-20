@@ -10,21 +10,27 @@ import { getProfileState, setFriendState, setProfileInfo } from '../../core/stor
 import { setLoadingState } from '../../core/store/loading.slice';
 import ConfirmDialogue from '../../components/ConfirmDialogue/ConfirmDialogue';
 import socket from '../../core/socket/socket.client';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { getActiveChatState, setActiveChatState } from '../../core/store/activeChat.slice';
 import Call from '../../components/Call/Call';
 
 const Home = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [friendsIds, setFriendsIds] = useState([]);
   const friends = useSelector(getProfileState).friends;
   const activeChat = useSelector(getActiveChatState);
   const getProfile = async () => {
-    const user = await axiosInstance.get('users/me');
-    dispatch(setProfileInfo(user.data));
-    dispatch(setFriendState(user.data.friends));
-    setFriendsIds(user.data.friends.map((friend) => friend.id));
-    localStorage.setItem('user', JSON.stringify(user.data));
+    try {
+      const user = await axiosInstance.get('users/me');
+      dispatch(setProfileInfo(user.data));
+      dispatch(setFriendState(user.data.friends));
+      setFriendsIds(user.data.friends.map((friend) => friend.id));
+      localStorage.setItem('user', JSON.stringify(user.data));
+    } catch (err) {
+      localStorage.clear();
+      navigate('/auth');
+    }
     dispatch(setLoadingState(false));
   };
 

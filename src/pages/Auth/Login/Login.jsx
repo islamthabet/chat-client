@@ -34,7 +34,8 @@ const Login = () => {
       localStorage.setItem('refreshToken', res.data.token.refreshToken);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       socket.disconnect();
-      navigate('/');
+      // navigate('/');
+      location.assign('/');
     } catch (error) {
       dispatch(setLoadingState(false));
     }
